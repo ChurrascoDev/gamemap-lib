@@ -30,7 +30,7 @@ public class SWMAWorld extends AbstractAWorld {
 
     @Override
     @SuppressWarnings("unchecked")
-    public @NotNull Object getHandle() {
+    public @NotNull World getHandle() {
         World world = ((WeakReference<World>) super.getHandle()).get();
 
         if (world == null)
