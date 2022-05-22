@@ -2,17 +2,12 @@ package com.github.imthenico.gamemaplib.test.util;
 
 import com.github.imthenico.gmlib.world.AWorld;
 import com.github.imthenico.gmlib.world.WorldContainer;
-import com.github.imthenico.json.JsonSerializable;
-import com.github.imthenico.json.JsonTreeBuilder;
-import com.google.gson.JsonElement;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.jetbrains.annotations.NotNull;
 
-import java.util.Map;
 import java.util.Objects;
 
-public class LocationModel implements JsonSerializable {
+public class LocationModel {
 
     protected double x, y, z;
     protected float yaw, pitch;
@@ -108,22 +103,6 @@ public class LocationModel implements JsonSerializable {
         return Objects.hash(x, y, z, yaw, pitch, worldName);
     }
 
-    @Override
-    public @NotNull JsonElement serialize() {
-        JsonTreeBuilder jsonTreeBuilder = JsonTreeBuilder.create();
-
-        jsonTreeBuilder.add("x", x);
-        jsonTreeBuilder.add("y", y);
-        jsonTreeBuilder.add("z", z);
-        jsonTreeBuilder.add("yaw", yaw);
-        jsonTreeBuilder.add("pitch", pitch);
-
-        if (worldName != null)
-            jsonTreeBuilder.add("worldName", worldName);
-
-        return jsonTreeBuilder.build();
-    }
-
     public Location toBukkit(WorldContainer<?> worldContainer, String worldName) {
         Objects.requireNonNull(worldName, "worldName is null");
 
@@ -147,17 +126,6 @@ public class LocationModel implements JsonSerializable {
                 z,
                 yaw,
                 pitch
-        );
-    }
-
-    public static LocationModel deserialize(Map<String, Object> objectMap) {
-        return new LocationModel(
-                (double) objectMap.get("x"),
-                (double) objectMap.get("y"),
-                (double) objectMap.get("z"),
-                (float) objectMap.get("yaw"),
-                (float) objectMap.get("pitch"),
-                (String) objectMap.get("worldName")
         );
     }
 

@@ -1,18 +1,18 @@
 package com.github.imthenico.gmlib.event;
 
 import com.github.imthenico.gmlib.MapModel;
-import com.github.imthenico.json.JsonTreeBuilder;
+import com.google.gson.JsonObject;
 
 public class MapModelSerializationEvent extends ModelEvent {
 
-    private final JsonTreeBuilder jsonTreeBuilder;
+    private final JsonObject jsonObject;
 
-    public MapModelSerializationEvent(MapModel<?> mapModel, JsonTreeBuilder jsonTreeBuilder) {
+    public MapModelSerializationEvent(MapModel<?> mapModel, JsonObject jsonObject) {
         super(mapModel);
-        this.jsonTreeBuilder = jsonTreeBuilder;
+        this.jsonObject = jsonObject;
     }
 
-    public JsonTreeBuilder getJsonTreeBuilder() {
-        return jsonTreeBuilder;
+    public JsonObject getJsonObject() {
+        return jsonObject;
     }
 }

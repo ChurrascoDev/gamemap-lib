@@ -1,10 +1,10 @@
 package com.github.imthenico.gmlib.handler;
 
 import com.github.imthenico.gmlib.ModelData;
-import com.github.imthenico.json.JsonReader;
+import com.google.gson.JsonObject;
 
 public interface DataDeserializer<T extends ModelData> {
 
-    T deserializeData(JsonReader jsonReader);
+    T deserializeData(JsonObject jsonObject);
 
 }

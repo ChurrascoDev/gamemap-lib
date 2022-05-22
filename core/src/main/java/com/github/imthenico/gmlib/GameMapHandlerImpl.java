@@ -14,8 +14,6 @@ import com.github.imthenico.gmlib.handler.HandlerRegistry;
 import com.github.imthenico.gmlib.handler.DataSerializer;
 import com.github.imthenico.gmlib.pool.TemplatePool;
 import com.github.imthenico.gmlib.world.*;
-import com.github.imthenico.json.JsonReader;
-import com.github.imthenico.json.JsonTreeBuilder;
 import com.google.gson.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -46,6 +44,7 @@ public class GameMapHandlerImpl implements GameMapHandler {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public <D extends ModelData> @NotNull MapModel<D> fromJson(
             @NotNull JsonObject jsonObject,
             @NotNull Class<D> dataClass,
@@ -56,14 +55,15 @@ public class GameMapHandlerImpl implements GameMapHandler {
         if (dataDeserializer == null)
             throw new NoDataManipulatorFoundException("No deserializer found for " + dataClass);
 
-        JsonReader jsonReader = JsonReader.create(jsonObject, gson, null);
+        String name = getElement(jsonObject, "name")
+                .getAsString();
 
-        String name = jsonReader.readString("name");
+        D data = dataDeserializer.deserializeData(jsonObject);
 
-        D data = dataDeserializer.deserializeData(jsonReader);
+        String worldName = getElement(jsonObject, "world")
+                .getAsString();
 
-        String worldName = jsonReader.readString("world");
-        List<String> additionalWorlds = jsonReader.listOf("additional-worlds", String.class);
+        List<String> additionalWorlds = gson.fromJson(getElement(jsonObject, "additional-worlds"), List.class);
 
         WorldRequest worldRequest = WorldRequest.of(worldName);
 
@@ -112,20 +112,9 @@ public class GameMapHandlerImpl implements GameMapHandler {
 
         String jsonText = gson.toJson(jsonObject);
 
-        JsonTreeBuilder jsonTreeBuilder = JsonTreeBuilder.create();
-        jsonTreeBuilder.addTree(jsonObject);
-
-        MapModelSerializationEvent event = new MapModelSerializationEvent(model, jsonTreeBuilder);
+        MapModelSerializationEvent event = new MapModelSerializationEvent(model, jsonObject);
         PublishResult publishResult = eventBus.dispatch(event);
         handlePublishResult(publishResult);
-
-        JsonObject modified = jsonTreeBuilder.build();
-
-        for (Map.Entry<String, JsonElement> entry : modified.entrySet()) {
-            if (!jsonObject.has(entry.getKey())) {
-                jsonObject.add(entry.getKey(), entry.getValue());
-            }
-        }
 
         return new Serialized(jsonObject, jsonText);
     }
@@ -191,5 +180,14 @@ public class GameMapHandlerImpl implements GameMapHandler {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private JsonElement getElement(JsonObject jsonObject, String name) {
+        JsonElement jsonElement = jsonObject.get("name");
+
+        if (jsonElement == null)
+            throw new IllegalStateException("Missing element: name");
+
+        return jsonElement;
     }
 }

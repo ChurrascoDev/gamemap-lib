@@ -14,7 +14,7 @@ public class GMTestModule implements DataManipulationModule {
 
     @Override
     public void configure(HandlerRegistry.Builder builder) {
-        builder.deserializer(ArenaModelData.class, jsonReader -> jsonReader.mapTo(ArenaModelData.class))
+        builder.deserializer(ArenaModelData.class, jsonObject -> gson.fromJson(jsonObject, ArenaModelData.class))
                 .serializer(ArenaModelData.class, mapData -> gson.toJsonTree(mapData).getAsJsonObject())
                 .customMapFactory(ArenaModelData.class, Arena.class, new ArenaMapFactory());
     }
