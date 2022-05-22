@@ -7,6 +7,9 @@ import org.jetbrains.annotations.NotNull;
 
 import static java.util.Objects.*;
 
+/**
+ * Charge of serialize and deserialize models and handle map creations.
+ */
 public interface GameMapHandler extends ModelHandler, ModelConverter {
 
     @NotNull HandlerRegistry getDataManipulation();

@@ -15,6 +15,11 @@ import java.util.concurrent.Executors;
 
 import static java.util.Objects.requireNonNull;
 
+/**
+ * Charge of provide, store and load {@link TemplateWorld}.
+ *
+ * You can load and store worlds in sync or async mode with total security.
+ */
 public interface TemplatePool {
 
     @Nullable TemplateWorld get(String name);

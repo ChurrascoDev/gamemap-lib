@@ -7,6 +7,12 @@ import com.github.imthenico.gmlib.world.WorldHolder;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * A container that stores the data of an already created map.
+ *
+ * You cannot modify the default fields. These will be automatically
+ * initialized by the {@link GameMapHandler} once the instance is created.
+ */
 public class GameMap extends SimpleMetadataHolder implements WorldHolder<AWorld> {
 
     private final WorldContainer<AWorld> additionalWorlds = new WorldContainer<>();
@@ -38,6 +44,9 @@ public class GameMap extends SimpleMetadataHolder implements WorldHolder<AWorld>
         return mapName;
     }
 
+    /**
+     * Init the default fields.
+     */
     void init(
             AWorld mainWorld,
             WorldContainer<AWorld> additionalWorlds,
