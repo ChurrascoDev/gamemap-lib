@@ -1,0 +1,5 @@
+name: GMTestPlugin
+main: com.github.imthenico.gamemaplib.test.GMTestPlugin
+version: 1.0
+depend:
+  - SlimeWorldManager
