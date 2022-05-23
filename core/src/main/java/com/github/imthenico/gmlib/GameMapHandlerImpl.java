@@ -183,10 +183,10 @@ public class GameMapHandlerImpl implements GameMapHandler {
     }
 
     private JsonElement getElement(JsonObject jsonObject, String name) {
-        JsonElement jsonElement = jsonObject.get("name");
+        JsonElement jsonElement = jsonObject.get(name);
 
         if (jsonElement == null)
-            throw new IllegalStateException("Missing element: name");
+            throw new IllegalStateException("Missing element: " + name);
 
         return jsonElement;
     }
